@@ -4,9 +4,10 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.timeAlive = 0
+	self.active = true
+	self.respawnTime = 30
  	self:SetNWEntity("myWeapon", "weapon_extinguisher")
 	self:SetModel( weapons.Get(self:GetNWEntity("myWeapon")).WorldModel )
-	self:SetPos(self:GetPos() + Vector(0,0,200))
 	self.Entity:SetUseType( SIMPLE_USE )
  
 	--self:PhysicsInit( SOLID_VPHYSICS )
@@ -27,7 +28,7 @@ end
 
 function ENT:StartTouch(ply)
 	local myGun = self:GetNWEntity("myWeapon")
-	if ply:IsPlayer() then
+	if ply:IsPlayer() and self.active then
 		if ply:Give(myGun) == NULL then
 			if weapons.Get(myGun).Primary.ClipSize > 0 then
 				ply:GiveAmmo(weapons.Get(myGun).Primary.ClipSize, weapons.Get(myGun).Primary.Ammo)
@@ -35,12 +36,22 @@ function ENT:StartTouch(ply)
 				ply:GiveAmmo(weapons.Get(myGun).Primary.DefaultClip, weapons.Get(myGun).Primary.Ammo)
 			end
 		end
-		self:Remove()
+		self.active = false
+		self:SetNoDraw(true)
+		self:SetSolid( SOLID_NONE )
+		timer.Simple(self.respawnTime, function()
+			self:SetSolid( SOLID_VPHYSICS )
+			self:SetNoDraw(false)
+			self.active = true
+		end)
 	end
 end
 
 function ENT:Think( ... )
-    self:SetAngles(Angle(0, TimedSin(0.1,0,0.5,1) * 360, 0))
+    self:SetAngles(Angle(0, self.timeAlive, 0))
     self:SetPos(self:GetPos() + Vector(0,0,TimedSin(0.1,0,1,0)))
     self.timeAlive = self.timeAlive + 3
+    if self.timeAlive > 360 then
+    	self.timeAlive = 0
+    end
 end
