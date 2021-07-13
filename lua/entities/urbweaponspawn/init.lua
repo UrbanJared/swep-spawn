@@ -9,17 +9,7 @@ function ENT:Initialize()
 	self.weapon = "weapon_medkit"
 	self:SetModel( weapons.Get(self.weapon).WorldModel )
 	self.Entity:SetUseType( SIMPLE_USE )
- 
-	--self:PhysicsInit( SOLID_VPHYSICS )
-	--self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
-	--self:SetSolidFlags(FSOLID_NOT_SOLID)
-	--self:AddSolidFlags(FSOLID_NOT_STANDABLE)
-	--self:AddSolidFlags(FSOLID_TRIGGER)
-    --local phys = self:GetPhysicsObject()
-	--if (phys:IsValid()) then
-	--	phys:Wake()
-	--end
 end
 
 function ENT:Use(a, c)
