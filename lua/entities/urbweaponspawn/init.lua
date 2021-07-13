@@ -4,7 +4,6 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.timeAlive = 0
-	self.active = true
 	self.respawnTime = nil
 	self.weapon = "weapon_medkit"
 	self:SetModel( weapons.Get(self.weapon).WorldModel )
@@ -24,7 +23,7 @@ function ENT:SetConfig(weapon, pos, respawnTime)
 end
 
 function ENT:StartTouch(ply)
-	if ply:IsPlayer() and self.active then
+	if ply:IsPlayer() then
 		if ply:Give(self.weapon) == NULL then
 			if weapons.Get(self.weapon).Primary.ClipSize > 0 then
 				ply:GiveAmmo(weapons.Get(self.weapon).Primary.ClipSize, weapons.Get(self.weapon).Primary.Ammo)
@@ -32,13 +31,11 @@ function ENT:StartTouch(ply)
 				ply:GiveAmmo(weapons.Get(self.weapon).Primary.DefaultClip, weapons.Get(self.weapon).Primary.Ammo)
 			end
 		end
-		self.active = false
 		self:SetNoDraw(true)
 		self:SetSolid( SOLID_NONE )
 		timer.Simple(self.respawnTime or 30, function()
 			self:SetSolid( SOLID_VPHYSICS )
 			self:SetNoDraw(false)
-			self.active = true
 		end)
 	end
 end
@@ -48,6 +45,6 @@ function ENT:Think( ... )
     self:SetPos(self:GetPos() + Vector(0,0,TimedSin(0.1,0,1,0)))
     self.timeAlive = self.timeAlive + 3
     if self.timeAlive > 360 then
-    	self.timeAlive = 0
+    	self.timeAlive = self.timeAlive - 360
     end
 end
