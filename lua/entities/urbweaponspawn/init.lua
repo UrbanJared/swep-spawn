@@ -3,7 +3,6 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
 function ENT:Initialize()
-	self.timeAlive = 0
 	self.respawnTime = nil
 	self.weapon = "weapon_medkit"
 	self:SetModel( weapons.Get(self.weapon).WorldModel )
@@ -38,13 +37,4 @@ function ENT:StartTouch(ply)
 			self:SetNoDraw(false)
 		end)
 	end
-end
-
-function ENT:Think( ... )
-    self:SetAngles(Angle(0, self.timeAlive, 0))
-    self:SetPos(self:GetPos() + Vector(0,0,TimedSin(0.1,0,1,0)))
-    self.timeAlive = self.timeAlive + 3
-    if self.timeAlive > 360 then
-    	self.timeAlive = self.timeAlive - 360
-    end
 end
