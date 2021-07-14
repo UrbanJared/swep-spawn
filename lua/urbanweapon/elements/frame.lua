@@ -2,15 +2,19 @@ local PANEL = {}
 
 function PANEL:Init()
 	self.entity = nil
-	local weaponBtn = self:Add("DButton")
-	weaponBtn:SetText("Change Weapon")
-	weaponBtn:Dock(TOP)
-	weaponBtn.DoClick = function()
+	self.weapon = nil
+	self.pos = nil
+	self.respawnTime = nil
+	self.weaponBtn = self:Add("DButton")
+	self.weaponBtn:SetText("Change Weapon")
+	self.weaponBtn:Dock(TOP)
+	self.weaponBtn.DoClick = function()
 		local wepframe = vgui.Create( "UrbanWeapon.WeaponFrame" )
 		wepframe:SetSize( 500, 500)
 		wepframe:SetTitle("Select a Weapon")
 		wepframe:Center()
 		wepframe:MakePopup()
+		wepframe.base = self
 	end
 	local posLabel = self:Add("DLabel")
 	posLabel:SetText("Position")
@@ -21,7 +25,7 @@ function PANEL:Init()
 	local respawnLabel = self:Add("DLabel")
 	respawnLabel:SetText("Respawn Time (seconds)")
 	respawnLabel:Dock(TOP)
-	self.respawnEntry = self:Add("DTextEntry")
+	self.respawnEntry = self:Add("DNumberWang")
 	self.respawnEntry:Dock(TOP)
 
 	local saveBtn = self:Add("DButton")
@@ -29,7 +33,13 @@ function PANEL:Init()
 	saveBtn:SetTall(40)
 	saveBtn:Dock(BOTTOM)
 	saveBtn.DoClick = function()
-
+		net.Start("UrbanWeaponSpawnsSetConfig")
+			net.WriteEntity(self.entity)
+			--net.WriteInt(id, 32)
+			net.WriteString(tostring(self.weapon))
+			net.WriteString(tostring(self.pos))
+			net.WriteFloat(self.respawnEntry:GetValue())
+		net.SendToServer()
 	end
 	local deleteBtn = self:Add("DButton")
 	deleteBtn:SetText("Delete")
@@ -39,6 +49,11 @@ function PANEL:Init()
 	deleteBtn.DoClick = function()
 
 	end
+end
+
+function PANEL:SelectWep(weapon)
+	self.weapon = weapon
+	self.weaponBtn:SetText(tostring(weapons.Get(weapon).PrintName))
 end
 --
 --function PANEL:PerformLayout(w, h)

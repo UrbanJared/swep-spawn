@@ -16,16 +16,16 @@ end
 function ENT:Use(a, ply)
 	if ply:IsAdmin() then
 		net.Start("UrbanWeaponSpawnsOpenMenu")
-		net.WriteEntity(self)
+			net.WriteEntity(self)
 		net.Send(ply)
 	end
 end
 
 function ENT:SetConfig(id, weapon, pos, respawnTime)
-	self:SetNWInt("id", id or self:GetNWInt("id"))
-	self:SetNWFloat("respawnTime", respawnTime or self:GetNWFloat("respawnTime"))
-	self:SetNWString("weapon", weapon or self:GetNWString("weapon"))
-	self:SetPos(Vector(pos) or self:GetPos())
+	self:SetNWInt("id", id)
+	self:SetNWFloat("respawnTime", respawnTime)
+	self:SetNWString("weapon", weapon)
+	self:SetPos(Vector(pos))
 	self:SetModel( weapons.Get(weapon).WorldModel )
 end
 
