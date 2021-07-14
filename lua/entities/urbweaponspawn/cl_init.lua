@@ -7,16 +7,14 @@ function ENT:Draw()
 	self:SetAngles(ang)
 end
 
-net.Receive( "UrbanWeaponSpawnsOpenMenu", function() 
-	local w = ScrW()
-	local h = ScrH()
+net.Receive( "UrbanWeaponSpawnsOpenMenu", function()
 	local ent = net.ReadEntity()
-	local scale = 0.4
 	local frame = vgui.Create( "UrbanWeapon.Frame" )
 	frame:SetSize( 300, 230)
-	frame:SetTitle("Editing " .. weapons.Get(ent:GetNWInt("weapon")).PrintName .. " Spawn")
+	frame:SetTitle("Editing " .. weapons.Get(ent:GetNWString("weapon")).PrintName .. " Spawn")
 	frame:Center()
 	frame:MakePopup()
-	frame.posEntry:SetText(tostring(ent:GetPos()))
-	frame.respawnEntry:SetText(tostring(ent:GetNWInt("respawnTime")))
+	frame.posEntry:SetValue(tostring(ent:GetPos()))
+	frame.respawnEntry:SetValue(tostring(ent:GetNWFloat("respawnTime")))
+	frame.entity = ent
 end)
