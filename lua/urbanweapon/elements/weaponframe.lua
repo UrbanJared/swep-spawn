@@ -11,7 +11,7 @@ function PANEL:Init()
 
 	local weps = weapons.GetList()
 	for k,v in pairs(weps) do
-		if (v.PrintName) then
+		if (v.PrintName and v.WorldModel) then
 			weplist:AddLine(v.ClassName, v.PrintName, v.Category or "Other")
 		end
 	end

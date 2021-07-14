@@ -9,7 +9,7 @@ function ENT:Initialize()
 	self:SetNWFloat("respawnTime", 30)
 	self:SetNWString("weapon","weapon_medkit")
 	self:SetModel( weapons.Get(self:GetNWString("weapon")).WorldModel )
-	self.Entity:SetUseType( SIMPLE_USE )
+	self:SetUseType( SIMPLE_USE )
 	self:SetSolid( SOLID_VPHYSICS )
 end
 
