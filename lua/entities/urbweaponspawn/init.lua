@@ -2,19 +2,28 @@ AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
+util.AddNetworkString("UrbanWeaponSpawnsOpenMenu")
+
 function ENT:Initialize()
 	self.respawnTime = 30
+	self.id = 0
 	self.weapon = weapons.Get("weapon_medkit")
 	self:SetModel( self.weapon.WorldModel )
 	self.Entity:SetUseType( SIMPLE_USE )
 	self:SetSolid( SOLID_VPHYSICS )
 end
 
-function ENT:Use(a, c)
-
+function ENT:Use(a, ply)
+	if ply:IsAdmin() then
+		net.Start("UrbanWeaponSpawnsOpenMenu")
+		net.WriteUInt(self.id, 32)
+		net.WriteEntity(self)
+		net.Send(ply)
+	end
 end
 
-function ENT:SetConfig(weapon, pos, respawnTime)
+function ENT:SetConfig(id, weapon, pos, respawnTime)
+	self.id = id
 	self.respawnTime = respawnTime
 	self:SetPos(Vector(pos))
 	self.weapon = weapons.Get(weapon)
