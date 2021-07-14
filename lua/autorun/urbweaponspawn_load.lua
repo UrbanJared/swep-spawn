@@ -6,8 +6,7 @@ if SERVER then
     end
 
     hook.Add("InitPostEntity","UrbWeaponSpawnInit",function() 
-        local initQuery = sql.Query( "CREATE TABLE IF NOT EXISTS urbws_weapons (weapon VARCHAR(255) NOT NULL, map VARCHAR(255) NOT NULL, pos VARCHAR(255) NOT NULL, respawnTime DECIMAL(8,2) NOT NULL)" )
-        --local testQuery = sql.Query("INSERT INTO urbws_weapons (weapon, map, pos, respawnTime) VALUES ('weapon_extinguisher', 'rp_southside_day', '9870.124023 1218.562134 -100', 30)")     
+        local initQuery = sql.Query( "CREATE TABLE IF NOT EXISTS urbws_weapons (weapon VARCHAR(255) NOT NULL, map VARCHAR(255) NOT NULL, pos VARCHAR(255) NOT NULL, respawnTime DECIMAL(8,2) NOT NULL)" )  
         local spawnQuery = sql.Query("SELECT * FROM urbws_weapons WHERE map ='" .. game.GetMap() .. "'")
         for k,v in pairs(spawnQuery) do
             SpawnWeapon(k,v)
