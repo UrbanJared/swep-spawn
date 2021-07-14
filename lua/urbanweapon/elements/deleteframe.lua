@@ -2,7 +2,6 @@ local PANEL = {}
 
 function PANEL:Init()
 	self.base = nil
-	self.entity = nil
 	local deleteText = self:Add("DLabel")
 	deleteText:SetText("Are you sure you want to delete this spawn point?")
 	deleteText:Dock(TOP)
@@ -12,7 +11,7 @@ function PANEL:Init()
 	acceptBtn:Dock(BOTTOM)
 	acceptBtn.DoClick = function()
 		net.Start("UrbanWeaponSpawnsDelete")
-			net.WriteEntity(self.entity)
+			net.WriteEntity(self.base.entity)
 		net.SendToServer()
 		self:Remove()
 		self.base:Remove()
