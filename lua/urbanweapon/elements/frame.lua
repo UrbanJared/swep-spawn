@@ -47,7 +47,13 @@ function PANEL:Init()
 	deleteBtn:DockMargin(0,0,0,5)
 	deleteBtn:Dock(BOTTOM)
 	deleteBtn.DoClick = function()
-
+		local frame = vgui.Create( "UrbanWeapon.DeleteFrame" )
+		frame:SetSize( 280, 180)
+		frame:SetTitle("Delete?")
+		frame:Center()
+		frame:MakePopup()
+		frame.entity = self.entity
+		frame.base = self
 	end
 end
 
