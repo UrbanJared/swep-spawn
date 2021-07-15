@@ -44,7 +44,6 @@ function PANEL:Init()
 		frame:SetTitle("Delete?")
 		frame:Center()
 		frame:MakePopup()
-		frame.entity = self.entity
 		frame.base = self
 	end
 end
