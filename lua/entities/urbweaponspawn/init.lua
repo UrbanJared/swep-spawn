@@ -2,37 +2,46 @@ AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
+util.AddNetworkString("UrbanWeaponSpawnsOpenMenu")
+
 function ENT:Initialize()
-	self.respawnTime = 30
-	self.weapon = weapons.Get("weapon_medkit")
-	self:SetModel( self.weapon.WorldModel )
-	self.Entity:SetUseType( SIMPLE_USE )
+	self:SetNWInt("id", 0)
+	self:SetNWFloat("respawnTime", 30)
+	self:SetNWString("weapon","weapon_medkit")
+	self:SetModel( weapons.Get(self:GetNWString("weapon")).WorldModel )
+	self:SetUseType( SIMPLE_USE )
 	self:SetSolid( SOLID_VPHYSICS )
 end
 
-function ENT:Use(a, c)
-
+function ENT:Use(a, ply)
+	if ply:IsAdmin() then
+		net.Start("UrbanWeaponSpawnsOpenMenu")
+			net.WriteEntity(self)
+		net.Send(ply)
+	end
 end
 
-function ENT:SetConfig(weapon, pos, respawnTime)
-	self.respawnTime = respawnTime
+function ENT:SetConfig(id, weapon, pos, respawnTime)
+	self:SetNWInt("id", id)
+	self:SetNWFloat("respawnTime", respawnTime)
+	self:SetNWString("weapon", weapon)
 	self:SetPos(Vector(pos))
-	self.weapon = weapons.Get(weapon)
-	self:SetModel( self.weapon.WorldModel )
+	self:SetModel( weapons.Get(weapon).WorldModel )
 end
 
 function ENT:StartTouch(ply)
+	local weapon = weapons.Get(self:GetNWString("weapon"))
 	if ply:IsPlayer() then
-		if ply:Give(self.weapon.ClassName) == NULL then
-			if self.weapon.Primary.ClipSize > 0 then
-				ply:GiveAmmo(self.weapon.Primary.ClipSize, self.weapon.Primary.Ammo)
+		if ply:Give(weapon.ClassName) == NULL then
+			if weapon.Primary.ClipSize > 0 then
+				ply:GiveAmmo(weapon.Primary.ClipSize, weapon.Primary.Ammo)
 			else
-				ply:GiveAmmo(self.weapon.Primary.DefaultClip, self.weapon.Primary.Ammo)
+				ply:GiveAmmo(weapon.Primary.DefaultClip, weapon.Primary.Ammo)
 			end
 		end
 		self:SetNoDraw(true)
 		self:SetSolid( SOLID_NONE )
-		timer.Simple(self.respawnTime, function()
+		timer.Simple(self:GetNWFloat("respawnTime"), function()
 			self:SetSolid( SOLID_VPHYSICS )
 			self:SetNoDraw(false)
 		end)
