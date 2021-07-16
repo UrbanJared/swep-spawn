@@ -10,9 +10,7 @@ function PANEL:Init()
 	weplist:AddColumn( "Category" )
 
 	for k,v in pairs(weapons.GetList()) do
-		if (v.PrintName) then
-			weplist:AddLine(v.ClassName, v.PrintName, v.Category or "Other")
-		end
+		weplist:AddLine(v.ClassName, v.PrintName, v.Category or "Other")
 	end
 
 	weplist.OnRowSelected = function( lst, index, pnl )
