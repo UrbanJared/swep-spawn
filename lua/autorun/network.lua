@@ -8,6 +8,9 @@ if SERVER then
 		local weapon = net.ReadString()
 		local pos = tostring(ent:GetPos())
 		local respawnTime = net.ReadFloat()
+		if respawnTime < 0.7 then -- Less than this gets players stuck. Less than 0 causes crashes.
+			respawnTime = 0.7
+		end
 		ent:SetConfig(id, weapon, pos, respawnTime)
 		if id == 0 then
 			local insertQuery = sql.Query("INSERT INTO urbws_weapons (weapon, map, pos, respawnTime) VALUES ('"..weapon.."','"..game.GetMap().."','"..pos.."','"..respawnTime.."')")

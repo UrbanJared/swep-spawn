@@ -6,7 +6,7 @@ util.AddNetworkString("UrbanWeaponSpawnsOpenMenu")
 
 function ENT:Initialize()
 	self:SetNWInt("id", 0)
-	self:SetNWFloat("respawnTime", 30)
+	self:SetNWFloat("respawnTime", 10)
 	self:SetNWString("weapon","weapon_medkit")
 	self:SetModel( "models/weapons/w_medkit.mdl" )
 	self:SetUseType( SIMPLE_USE )
@@ -48,7 +48,7 @@ function ENT:GiveToPlayer(ply)
 		timer.Simple(self:GetNWFloat("respawnTime"), function()
 			self:SetSolid( SOLID_VPHYSICS )
 			self:SetNoDraw(false)
-			for k,v in pairs(ents.FindInBox(self:OBBMins() + self:GetPos(),self:OBBMaxs() + self:GetPos())) do
+			for k,v in pairs(ents.FindInBox((self:OBBMins() * 2) + self:GetPos(),(self:OBBMaxs() * 2) + self:GetPos())) do
 				if v:IsPlayer() then
 					self:GiveToPlayer(v)
 				end

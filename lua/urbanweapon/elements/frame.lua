@@ -20,6 +20,8 @@ function PANEL:Init()
 	respawnLabel:Dock(TOP)
 	self.respawnEntry = self:Add("DNumberWang")
 	self.respawnEntry:Dock(TOP)
+	self.respawnEntry:SetMin(0.7)
+	self.respawnEntry:SetMax(1000000)
 
 	local saveBtn = self:Add("DButton")
 	saveBtn:SetText("Save")
