@@ -8,7 +8,7 @@ function ENT:Initialize()
 	self:SetNWInt("id", 0)
 	self:SetNWFloat("respawnTime", 30)
 	self:SetNWString("weapon","weapon_medkit")
-	self:SetModel( weapons.Get(self:GetNWString("weapon")).WorldModel )
+	self:SetModel( "models/weapons/w_medkit.mdl" )
 	self:SetUseType( SIMPLE_USE )
 	self:SetSolid( SOLID_VPHYSICS )
 end
@@ -30,9 +30,13 @@ function ENT:SetConfig(id, weapon, pos, respawnTime)
 end
 
 function ENT:StartTouch(ply)
+	self:GiveToPlayer(ply)
+end
+
+function ENT:GiveToPlayer(ply)
 	local weapon = weapons.Get(self:GetNWString("weapon"))
 	if ply:IsPlayer() then
-		if ply:Give(weapon.ClassName) == NULL then
+		if ply:Give(weapon.ClassName) == NULL then --If the player already has the weapon
 			if weapon.Primary.ClipSize > 0 then
 				ply:GiveAmmo(weapon.Primary.ClipSize, weapon.Primary.Ammo)
 			else
@@ -44,6 +48,11 @@ function ENT:StartTouch(ply)
 		timer.Simple(self:GetNWFloat("respawnTime"), function()
 			self:SetSolid( SOLID_VPHYSICS )
 			self:SetNoDraw(false)
+			for k,v in pairs(ents.FindInBox(self:OBBMins() + self:GetPos(),self:OBBMaxs() + self:GetPos())) do
+				if v:IsPlayer() then
+					self:GiveToPlayer(v)
+				end
+			end
 		end)
-	end
+	end 
 end

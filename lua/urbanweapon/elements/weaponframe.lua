@@ -9,8 +9,7 @@ function PANEL:Init()
 	weplist:AddColumn( "Weapon Name" )
 	weplist:AddColumn( "Category" )
 
-	local weps = weapons.GetList()
-	for k,v in pairs(weps) do
+	for k,v in pairs(weapons.GetList()) do
 		if (v.PrintName) then
 			weplist:AddLine(v.ClassName, v.PrintName, v.Category or "Other")
 		end
