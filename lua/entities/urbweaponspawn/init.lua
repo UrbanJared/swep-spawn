@@ -48,7 +48,7 @@ function ENT:GiveToPlayer(ply)
 		timer.Simple(self:GetNWFloat("respawnTime"), function()
 			self:SetSolid( SOLID_VPHYSICS )
 			self:SetNoDraw(false)
-			for k,v in pairs(ents.FindInBox((self:OBBMins() * 2) + self:GetPos(),(self:OBBMaxs() * 2) + self:GetPos())) do
+			for k,v in pairs(ents.FindInSphere(self:GetPos(), self:GetModelRadius())) do
 				if v:IsPlayer() then
 					self:GiveToPlayer(v)
 				end
