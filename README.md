@@ -1,6 +1,6 @@
 # GTA Style SWEP Spawns
-IMPORTANT: This addon only works in multiplayer (either local/dedicated servers or peer-peer).
-If there is demand I will look into a singleplayer version.
+
+Weapon spawns in the style of classic Grand Theft Auto games (Vice City/San Andreas).
 
 HOW TO USE:
 1. Spawn 'SWEP Spawn' entity from entities menu
