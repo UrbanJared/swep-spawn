@@ -25,13 +25,5 @@ function PANEL:Init()
 		self:Remove()
 	end
 end
---
---function PANEL:PerformLayout(w, h)
---
---end
---
---function PANEL:Paint(w, h)
---
---end
 
 vgui.Register("UrbanWeapon.DeleteFrame", PANEL, "DFrame")

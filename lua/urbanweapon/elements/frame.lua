@@ -2,12 +2,11 @@ local PANEL = {}
 
 function PANEL:Init()
 	self.entity = nil
-	self.weapon = nil
-	self.weaponBtn = self:Add("DButton")
-	self.weaponBtn:SetText("Change Weapon")
-	self.weaponBtn:Dock(TOP)
-	self.weaponBtn:SetTall(40)
-	self.weaponBtn.DoClick = function()
+	local weaponBtn = self:Add("DButton")
+	weaponBtn:SetText("Change Weapon")
+	weaponBtn:Dock(TOP)
+	weaponBtn:SetTall(40)
+	weaponBtn.DoClick = function()
 		local wepframe = vgui.Create( "UrbanWeapon.WeaponFrame" )
 		wepframe:SetSize( 500, 500)
 		wepframe:SetTitle("Select a Weapon")
@@ -15,6 +14,11 @@ function PANEL:Init()
 		wepframe:MakePopup()
 		wepframe.base = self
 	end
+	local weaponLabel = self:Add("DLabel")
+	weaponLabel:SetText("Weapon Class")
+	weaponLabel:Dock(TOP)
+	self.weaponEntry = self:Add("DTextEntry")
+	self.weaponEntry:Dock(TOP)
 	local respawnLabel = self:Add("DLabel")
 	respawnLabel:SetText("Respawn Time (seconds)")
 	respawnLabel:Dock(TOP)
@@ -28,9 +32,10 @@ function PANEL:Init()
 	saveBtn:SetTall(35)
 	saveBtn:Dock(BOTTOM)
 	saveBtn.DoClick = function()
+		if !weapons.Get(self.weaponEntry:GetValue()) then ply:PrintMessage( HUD_PRINTTALK, "Invalid weapon" ) return end
 		net.Start("UrbanWeaponSpawnsSetConfig")
 			net.WriteEntity(self.entity)
-			net.WriteString(tostring(self.weapon))
+			net.WriteString(self.weaponEntry:GetValue())
 			net.WriteFloat(self.respawnEntry:GetValue())
 		net.SendToServer()
 		self:Remove()
@@ -49,18 +54,5 @@ function PANEL:Init()
 		frame.base = self
 	end
 end
-
-function PANEL:SelectWep(weapon)
-	self.weapon = weapon
-	self.weaponBtn:SetText(tostring(weapons.Get(weapon).PrintName))
-end
---
---function PANEL:PerformLayout(w, h)
---
---end
---
---function PANEL:Paint(w, h)
---
---end
 
 vgui.Register("UrbanWeapon.Frame", PANEL, "DFrame")

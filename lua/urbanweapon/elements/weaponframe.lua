@@ -14,17 +14,9 @@ function PANEL:Init()
 	end
 
 	weplist.OnRowSelected = function( lst, index, pnl )
-		self.base:SelectWep(pnl:GetColumnText( 1 ))
+		self.base.weaponEntry:SetText(weapons.Get(pnl:GetColumnText( 1 )).ClassName)
 		self:Remove()
 	end
 end
---
---function PANEL:PerformLayout(w, h)
---
---end
---
---function PANEL:Paint(w, h)
---
---end
 
 vgui.Register("UrbanWeapon.WeaponFrame", PANEL, "DFrame")

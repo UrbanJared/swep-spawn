@@ -31,5 +31,4 @@ if SERVER then
 		end
 		ent:Remove()
 	end)
-
 end

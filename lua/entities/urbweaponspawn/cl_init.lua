@@ -9,13 +9,13 @@ end
 
 net.Receive( "UrbanWeaponSpawnsOpenMenu", function()
 	local ent = net.ReadEntity()
-	local weapon = ent:GetNWString("weapon")
+	local weapon = weapons.Get(ent:GetNWString("weapon"))
 	local frame = vgui.Create( "UrbanWeapon.Frame" )
-	frame:SetSize( 300, 200)
-	frame:SetTitle("Editing " .. weapons.Get(weapon).PrintName .. " Spawn")
+	frame:SetSize( 300, 240)
+	frame:SetTitle("Editing " .. weapon.PrintName .. " Spawn")
 	frame:Center()
 	frame:MakePopup()
 	frame.respawnEntry:SetValue(ent:GetNWFloat("respawnTime"))
 	frame.entity = ent
-	frame.weapon = weapon
+	frame.weaponEntry:SetText(weapon.ClassName)
 end)
