@@ -46,11 +46,13 @@ function ENT:GiveToPlayer(ply)
 		self:SetNoDraw(true)
 		self:SetSolid( SOLID_NONE )
 		timer.Simple(self:GetNWFloat("respawnTime"), function()
-			self:SetSolid( SOLID_VPHYSICS )
-			self:SetNoDraw(false)
-			for k,v in pairs(ents.FindInSphere(self:GetPos(), self:GetModelRadius())) do
-				if v:IsPlayer() then
-					self:GiveToPlayer(v)
+			if self:IsValid() then
+				self:SetSolid( SOLID_VPHYSICS )
+				self:SetNoDraw(false)
+				for k,v in pairs(ents.FindInSphere(self:GetPos(), self:GetModelRadius())) do
+					if v:IsPlayer() then
+						self:GiveToPlayer(v)
+					end
 				end
 			end
 		end)
